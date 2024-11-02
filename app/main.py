@@ -8,14 +8,21 @@ import pandas as pd
 GGUF_PARSER_VERSION = os.getenv("GGUF_PARSER_VERSION", "v0.12.0")
 gguf_parser = Path("gguf-parser-linux-amd64")
 gguf_parser_url = f"https://github.com/gpustack/gguf-parser-go/releases/download/{GGUF_PARSER_VERSION}/{gguf_parser}"
+DEFAULT_URL = "https://huggingface.co/phate334/Llama-3.1-8B-Instruct-Q4_K_M-GGUF/resolve/main/llama-3.1-8b-instruct-q4_k_m.gguf"
 
 
-def process_url(url):
+def process_url(url, context_length):
     try:
-        res = os.popen(f"./{gguf_parser} -url {url} --json").read()
+        res = os.popen(
+            f"./{gguf_parser} --ctx-size={context_length} -url {url} --json"
+        ).read()
         data = json.loads(res)
 
+        metadata_df = pd.DataFrame([data["metadata"]])
+
         architecture_df = pd.DataFrame([data["architecture"]])
+
+        tokenizer_df = pd.DataFrame([data["tokenizer"]])
 
         estimate_df = pd.DataFrame(
             [
@@ -32,47 +39,31 @@ def process_url(url):
             ]
         )
 
-        metadata_df = pd.DataFrame([data["metadata"]])
-
-        tokenizer_df = pd.DataFrame([data["tokenizer"]])
-
-        return architecture_df, estimate_df, metadata_df, tokenizer_df
+        return metadata_df, architecture_df, tokenizer_df, estimate_df
     except Exception as e:
         return e
 
 
 if __name__ == "__main__":
     if not gguf_parser.exists():
-        os.system(f"wget {gguf_parser_url}")
-        os.system(f"chmod +x {gguf_parser}")
+        os.system(f"wget {gguf_parser_url}&&chmod +x {gguf_parser}")
 
     with open("devices.json", "r", encoding="utf-8") as f:
         device_list = json.load(f)
 
-    with gr.Blocks(title="GGUF 分析器") as iface:
-        url_input = gr.Textbox(label="輸入 GGUF URL")
-        submit_btn = gr.Button("送出")
-
-        gr.Markdown("### 模型架構")
-        architecture_table = gr.DataFrame()
-
-        gr.Markdown("### 效能評估")
-        estimate_table = gr.DataFrame()
-
-        gr.Markdown("### 中繼資料")
-        metadata_table = gr.DataFrame()
-
-        gr.Markdown("### 分詞器")
-        tokenizer_table = gr.DataFrame()
+    with gr.Blocks(title="GGUF Parser") as iface:
+        url_input = gr.Textbox(placeholder="Enter GGUF URL", value=DEFAULT_URL)
+        context_length = gr.Number(label="Context Length", value=8192)
+        submit_btn = gr.Button("Send")
 
         submit_btn.click(
             fn=process_url,
-            inputs=url_input,
+            inputs=[url_input, context_length],
             outputs=[
-                architecture_table,
-                estimate_table,
-                metadata_table,
-                tokenizer_table,
+                gr.DataFrame(label="METADATA"),
+                gr.DataFrame(label="ARCHITECTURE"),
+                gr.DataFrame(label="TOKENIZER"),
+                gr.DataFrame(label="ESTIMATE"),
             ],
         )
     iface.launch()
