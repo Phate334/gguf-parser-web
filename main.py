@@ -6,6 +6,7 @@ import gradio as gr
 import pandas as pd
 
 from app.models import GgufParser
+from app.tables import get_estimate_df, get_model_info_df
 
 GGUF_PARSER_VERSION = os.getenv("GGUF_PARSER_VERSION", "v0.12.0")
 gguf_parser = Path("gguf-parser-linux-amd64")
@@ -19,19 +20,14 @@ def process_url(url, context_length):
             f"./{gguf_parser} --ctx-size={context_length} -url {url} --json"
         ).read()
         parser_result = GgufParser.model_validate_json(res)
-        # data = json.loads(res)
 
-        metadata_df = pd.DataFrame([parser_result.metadata.model_dump()])
-
-        architecture_df = pd.DataFrame([parser_result.architecture.model_dump()])
-
-        tokenizer_df = pd.DataFrame([parser_result.tokenizer.model_dump()])
-
-        estimate_df = pd.DataFrame(
-            [parser_result.estimate.model_dump(exclude_none=True)]
+        model_info = get_model_info_df(
+            parser_result.metadata, parser_result.architecture, parser_result.tokenizer
         )
 
-        return metadata_df, architecture_df, tokenizer_df, estimate_df
+        estimate_df = get_estimate_df(parser_result.estimate)
+
+        return model_info, estimate_df
     except Exception as e:
         return e
 
@@ -52,9 +48,7 @@ if __name__ == "__main__":
             fn=process_url,
             inputs=[url_input, context_length],
             outputs=[
-                gr.DataFrame(label="METADATA"),
-                gr.DataFrame(label="ARCHITECTURE"),
-                gr.DataFrame(label="TOKENIZER"),
+                gr.DataFrame(label="Model Info"),
                 gr.DataFrame(label="ESTIMATE"),
             ],
         )
