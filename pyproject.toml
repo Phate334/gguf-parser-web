@@ -8,7 +8,13 @@ dependencies = [
     "gradio==5.3.0",
     "orjson==3.10.10",
     "pandas>=2.2.3",
+    "pydantic>=2.9.2",
 ]
 
 [tool.pylint]
 max-line-length = 180
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+]

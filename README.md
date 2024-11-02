@@ -5,7 +5,7 @@ colorFrom: green
 colorTo: indigo
 sdk: gradio
 sdk_version: 5.3.0
-app_file: app/main.py
+app_file: main.py
 pinned: false
 license: mit
 short_description: This project is a GUI for the gpustack/gguf-parser-go

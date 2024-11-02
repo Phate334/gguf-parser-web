@@ -5,6 +5,8 @@ from pathlib import Path
 import gradio as gr
 import pandas as pd
 
+from app.models import GgufParser
+
 GGUF_PARSER_VERSION = os.getenv("GGUF_PARSER_VERSION", "v0.12.0")
 gguf_parser = Path("gguf-parser-linux-amd64")
 gguf_parser_url = f"https://github.com/gpustack/gguf-parser-go/releases/download/{GGUF_PARSER_VERSION}/{gguf_parser}"
@@ -16,27 +18,17 @@ def process_url(url, context_length):
         res = os.popen(
             f"./{gguf_parser} --ctx-size={context_length} -url {url} --json"
         ).read()
-        data = json.loads(res)
+        parser_result = GgufParser.model_validate_json(res)
+        # data = json.loads(res)
 
-        metadata_df = pd.DataFrame([data["metadata"]])
+        metadata_df = pd.DataFrame([parser_result.metadata.model_dump()])
 
-        architecture_df = pd.DataFrame([data["architecture"]])
+        architecture_df = pd.DataFrame([parser_result.architecture.model_dump()])
 
-        tokenizer_df = pd.DataFrame([data["tokenizer"]])
+        tokenizer_df = pd.DataFrame([parser_result.tokenizer.model_dump()])
 
         estimate_df = pd.DataFrame(
-            [
-                {
-                    # "maximumTokensPerSecond": data["estimate"]["items"][0][
-                    #     "maximumTokensPerSecond"
-                    # ],
-                    "offloadLayers": data["estimate"]["items"][0]["offloadLayers"],
-                    "fullOffloaded": data["estimate"]["items"][0]["fullOffloaded"],
-                    "contextSize": data["estimate"]["contextSize"],
-                    "flashAttention": data["estimate"]["flashAttention"],
-                    "distributable": data["estimate"]["distributable"],
-                }
-            ]
+            [parser_result.estimate.model_dump(exclude_none=True)]
         )
 
         return metadata_df, architecture_df, tokenizer_df, estimate_df
