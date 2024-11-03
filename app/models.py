@@ -74,6 +74,7 @@ class Ram(BaseModel):
 class Item(BaseModel):
     offload_layers: int = Field(alias="offloadLayers")
     full_offloaded: bool = Field(alias="fullOffloaded")
+    maximum_tokens_per_second: float = Field(None, alias="maximumTokensPerSecond")
     ram: "Ram"
     vrams: list["Ram"]
 

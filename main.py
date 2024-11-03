@@ -7,7 +7,7 @@ import pandas as pd
 
 from app.devices import Device
 from app.models import GgufParser
-from app.tables import get_estimate_df, get_model_info_df
+from app.tables import get_estimate_df, get_gpus_df, get_model_info_df
 
 GGUF_PARSER_VERSION = os.getenv("GGUF_PARSER_VERSION", "v0.12.0")
 gguf_parser = Path("gguf-parser-linux-amd64")
@@ -27,8 +27,8 @@ device_options = [
 def process_url(url, context_length, device_selection):
     try:
         # 取得選擇的裝置鍵值
-        device_key = device_selection.split(" ")[0]
-        selected_device = devices[device_key]
+        device_name = device_selection.split(" ")[0]
+        selected_device = devices[device_name]
         res = os.popen(
             f'./{gguf_parser} --ctx-size={context_length} -url {url} --device-metric "{selected_device.FLOPS};{selected_device.memory_bandwidth}GBps" --json'
         ).read()
@@ -40,7 +40,9 @@ def process_url(url, context_length, device_selection):
 
         estimate_df = get_estimate_df(parser_result.estimate)
 
-        return model_info, estimate_df
+        gpus_info_df = get_gpus_df(parser_result.estimate, device_name, selected_device)
+
+        return model_info, estimate_df, gpus_info_df
     except Exception as e:
         return e
 
@@ -50,7 +52,9 @@ if __name__ == "__main__":
         os.system(f"wget {gguf_parser_url}&&chmod +x {gguf_parser}")
 
     with gr.Blocks(title="GGUF Parser") as iface:
-        url_input = gr.Textbox(placeholder="Enter GGUF URL", value=DEFAULT_URL)
+        url_input = gr.Textbox(
+            label="GGUF File URL", placeholder="Enter GGUF URL", value=DEFAULT_URL
+        )
         context_length = gr.Number(label="Context Length", value=8192)
         device_dropdown = gr.Dropdown(label="Select Device", choices=device_options)
         submit_btn = gr.Button("Send")
@@ -61,6 +65,7 @@ if __name__ == "__main__":
             outputs=[
                 gr.DataFrame(label="Model Info"),
                 gr.DataFrame(label="ESTIMATE"),
+                gr.DataFrame(label="GPUs INFO"),
             ],
         )
     iface.launch()
