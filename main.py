@@ -52,6 +52,9 @@ if __name__ == "__main__":
         os.system(f"wget {gguf_parser_url}&&chmod +x {gguf_parser}")
 
     with gr.Blocks(title="GGUF Parser") as iface:
+        gr.Markdown(
+            "This Space is a web GUI for the [gpustack/gguf-parser-go](https://github.com/gpustack/gguf-parser-go) package, designed for users who are not familiar with CLI. For more detailed output results, please consider using the original tool. If you find this GUI helpful, please give that a star."
+        )
         url_input = gr.Textbox(
             label="GGUF File URL", placeholder="Enter GGUF URL", value=DEFAULT_URL
         )
