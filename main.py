@@ -26,8 +26,7 @@ device_options = [
 
 def process_url(url, context_length, device_selection):
     try:
-        # 取得選擇的裝置鍵值
-        device_name = device_selection.split(" ")[0]
+        device_name = device_selection.split(" (")[0]
         selected_device = devices[device_name]
         res = os.popen(
             f'./{gguf_parser} --ctx-size={context_length} -url {url} --device-metric "{selected_device.FLOPS};{selected_device.memory_bandwidth}GBps" --json'
