@@ -6,10 +6,17 @@
     "A16*4": {"memorySize": 64, "memoryBandwidth": 800, "FLOPS": "73.728TFLOPS"},
     "A30": {"memorySize": 24, "memoryBandwidth": 933.1, "FLOPS": "165.12TFLOPS"},
     "A40": {"memorySize": 48, "memoryBandwidth": 695.8, "FLOPS": "149.68TFLOPS"},
-    "A100-40GB": {"memorySize": 40, "memoryBandwidth": 1555, "FLOPS": "312.0TFLOPS"},
-    "A100-80GB": {"memorySize": 80, "memoryBandwidth": 1555, "FLOPS": "312.0TFLOPS"},
-    "H100-PCIE": {"memorySize": 80, "memoryBandwidth": 2039, "FLOPS": "756.449TFLOPS"},
-    "H100-SXM": {"memorySize": 80, "memoryBandwidth": 3352, "FLOPS": "989.43TFLOPS"},
+    "A100 40GB": {"memorySize": 40, "memoryBandwidth": 1555, "FLOPS": "312.0TFLOPS"},
+    "A100 80GB": {"memorySize": 80, "memoryBandwidth": 1555, "FLOPS": "312.0TFLOPS"},
+    "H100 PCIE": {"memorySize": 80, "memoryBandwidth": 2039, "FLOPS": "756.449TFLOPS"},
+    "H100 SXM": {"memorySize": 80, "memoryBandwidth": 3352, "FLOPS": "989.43TFLOPS"},
     "L40": {"memorySize": 48, "memoryBandwidth": 864, "FLOPS": "362.066TFLOPS"},
-    "L4": {"memorySize": 24, "memoryBandwidth": 300, "FLOPS": "121.0TFLOPS"}
+    "L4": {"memorySize": 24, "memoryBandwidth": 300, "FLOPS": "121.0TFLOPS"},
+    "RTX 2000 Ada": {"memorySize": 16, "memoryBandwidth": 224, "FLOPS": "12TFLOPS"},
+    "RTX 4000 SFF Ada": {"memorySize": 20, "memoryBandwidth": 280, "FLOPS": "19.23TFLOPS"},
+    "RTX 4000 Ada": {"memorySize": 20, "memoryBandwidth": 360, "FLOPS": "26.73TFLOPS"},
+    "RTX 4500 Ada": {"memorySize": 24, "memoryBandwidth": 432, "FLOPS": "39.63TFLOPS"},
+    "RTX 5000 Ada": {"memorySize": 32, "memoryBandwidth": 576, "FLOPS": "65.28TFLOPS"},
+    "RTX 5880 Ada": {"memorySize": 48, "memoryBandwidth": 960, "FLOPS": "69.272TFLOPS"},
+    "RTX 6000 Ada": {"memorySize": 48, "memoryBandwidth": 960, "FLOPS": "91.06TFLOPS"}
 }
