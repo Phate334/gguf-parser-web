@@ -1,15 +1,15 @@
-[
-    {"model": "V100", "memory-size": 32, "memory-bandwidth": 900, "FLOPS": "112.224TFLOPS"},
-    {"model": "T4", "memory-size": 16, "memory-bandwidth": 320, "FLOPS": "64.8TFLOPS"},
-    {"model": "A2", "memory-size": 16, "memory-bandwidth": 200, "FLOPS": "18.124TFLOPS"},
-    {"model": "A10", "memory-size": 24, "memory-bandwidth": 600, "FLOPS": "124.96TFLOPS"},
-    {"model": "A16*4", "memory-size": 64, "memory-bandwidth": 800, "FLOPS": "73.728TFLOPS"},
-    {"model": "A30", "memory-size": 24, "memory-bandwidth": 933.1, "FLOPS": "165.12TFLOPS"},
-    {"model": "A40", "memory-size": 48, "memory-bandwidth": 695.8, "FLOPS": "149.68TFLOPS"},
-    {"model": "A100-40GB", "memory-size": 40, "memory-bandwidth": 1555, "FLOPS": "312.0TFLOPS"},
-    {"model": "A100-80GB", "memory-size": 80, "memory-bandwidth": 1555, "FLOPS": "312.0TFLOPS"},
-    {"model": "H100-PCIE", "memory-size": 80, "memory-bandwidth": 2039, "FLOPS": "756.449TFLOPS"},
-    {"model": "H100-SXM", "memory-size": 80, "memory-bandwidth": 3352, "FLOPS": "989.43TFLOPS"},
-    {"model": "L40", "memory-size": 48, "memory-bandwidth": 864, "FLOPS": "362.066TFLOPS"},
-    {"model": "L4", "memory-size": 24, "memory-bandwidth": 300, "FLOPS": "121.0TFLOPS"}
-]
+{
+    "V100": {"memorySize": 32, "memoryBandwidth": 900, "FLOPS": "112.224TFLOPS"},
+    "T4": {"memorySize": 16, "memoryBandwidth": 320, "FLOPS": "64.8TFLOPS"},
+    "A2": {"memorySize": 16, "memoryBandwidth": 200, "FLOPS": "18.124TFLOPS"},
+    "A10": {"memorySize": 24, "memoryBandwidth": 600, "FLOPS": "124.96TFLOPS"},
+    "A16*4": {"memorySize": 64, "memoryBandwidth": 800, "FLOPS": "73.728TFLOPS"},
+    "A30": {"memorySize": 24, "memoryBandwidth": 933.1, "FLOPS": "165.12TFLOPS"},
+    "A40": {"memorySize": 48, "memoryBandwidth": 695.8, "FLOPS": "149.68TFLOPS"},
+    "A100-40GB": {"memorySize": 40, "memoryBandwidth": 1555, "FLOPS": "312.0TFLOPS"},
+    "A100-80GB": {"memorySize": 80, "memoryBandwidth": 1555, "FLOPS": "312.0TFLOPS"},
+    "H100-PCIE": {"memorySize": 80, "memoryBandwidth": 2039, "FLOPS": "756.449TFLOPS"},
+    "H100-SXM": {"memorySize": 80, "memoryBandwidth": 3352, "FLOPS": "989.43TFLOPS"},
+    "L40": {"memorySize": 48, "memoryBandwidth": 864, "FLOPS": "362.066TFLOPS"},
+    "L4": {"memorySize": 24, "memoryBandwidth": 300, "FLOPS": "121.0TFLOPS"}
+}
