@@ -19,7 +19,7 @@ with open("devices.json", "r", encoding="utf-8") as f:
     devices = {key: Device(**value) for key, value in data.items()}
 
 device_options = [
-    f"{key} (Memory: {value.memory_size}GB, Bandwidth: {value.memory_bandwidth}GB/s)"
+    f"{key} (Memory: {value.memory_size}GB, FLOPS: {value.FLOPS}, Bandwidth: {value.memory_bandwidth}GB/s)"
     for key, value in devices.items()
 ]
 
