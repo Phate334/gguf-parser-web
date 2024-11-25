@@ -3,11 +3,11 @@ import os
 from pathlib import Path
 
 import gradio as gr
-import pandas as pd
 
 from app.devices import Device
 from app.models import GgufParser
 from app.tables import get_estimate_df, get_gpus_df, get_model_info_df
+from app.utils import cleanup_url
 
 GGUF_PARSER_VERSION = os.getenv("GGUF_PARSER_VERSION", "v0.12.0")
 gguf_parser = Path("gguf-parser-linux-amd64")
@@ -28,6 +28,7 @@ def process_url(url, context_length, device_selection):
     try:
         device_name = device_selection.split(" (")[0]
         selected_device = devices[device_name]
+        url = cleanup_url(url)
         res = os.popen(
             f'./{gguf_parser} --ctx-size={context_length} -url {url} --device-metric "{selected_device.FLOPS};{selected_device.memory_bandwidth}GBps" --json'
         ).read()
@@ -57,13 +58,13 @@ if __name__ == "__main__":
         url_input = gr.Textbox(
             label="GGUF File URL", placeholder="Enter GGUF URL", value=DEFAULT_URL
         )
-        context_length = gr.Number(label="Context Length", value=8192)
+        context_length_input = gr.Number(label="Context Length", value=8192)
         device_dropdown = gr.Dropdown(label="Select Device", choices=device_options)
         submit_btn = gr.Button("Send")
 
         submit_btn.click(
             fn=process_url,
-            inputs=[url_input, context_length, device_dropdown],
+            inputs=[url_input, context_length_input, device_dropdown],
             outputs=[
                 gr.DataFrame(label="Model Info"),
                 gr.DataFrame(label="ESTIMATE"),
